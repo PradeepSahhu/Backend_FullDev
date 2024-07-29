@@ -2,9 +2,10 @@
   "name": "final_project",
   "version": "1.0.0",
   "description": "Final complex project of code with chai",
-  "main": "index.js",
+  "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev":"nodemon src/index.js"
   },
   "keywords": [
     "react",
@@ -12,5 +13,8 @@
     "backend"
   ],
   "author": "Pradeep Sahu",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
 }
