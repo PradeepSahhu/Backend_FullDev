@@ -7,7 +7,20 @@ dotenv.config({
   path: "./env",
 });
 
-connectMongooseDb();
+connectMongooseDb()
+  .then(() => {
+    app.on("error", (error) => {
+      console.log("Express can't talk to the MongooseDb !!", error);
+    });
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(
+        `This Project is running on PORT: http:\\localhost:${process.env.PORT}`
+      );
+    });
+  })
+  .catch((error) => {
+    console.log("MongoDB connection failed !!", error);
+  });
 
 /*
 import express from "express";
@@ -29,3 +42,4 @@ const app = express();
   }
 })();
 */
+// CORS - corss origin resource sharing.
