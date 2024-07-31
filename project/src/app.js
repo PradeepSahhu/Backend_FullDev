@@ -32,4 +32,12 @@ app.use(cookieParser());
 
 // (err, req,res,next) = next is used by middleware for middleware, if used res then no further next is executed
 
+//routes import
+
+import userRouter from "./routes/user.routes.js";
+
+// routes declaration
+
+app.use("/api/v1/users", userRouter);
+
 export { app };

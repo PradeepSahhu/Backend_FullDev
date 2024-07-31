@@ -1,6 +1,8 @@
 // require("dotenv").config();
 import dotenv from "dotenv";
 
+import { app } from "./app.js";
+
 import connectMongooseDb from "./db/index.js";
 
 dotenv.config({
@@ -14,7 +16,7 @@ connectMongooseDb()
     });
     app.listen(process.env.PORT || 8000, () => {
       console.log(
-        `This Project is running on PORT: http:\\localhost:${process.env.PORT}`
+        `This Project is running on PORT: http://localhost:${process.env.PORT}`
       );
     });
   })
@@ -23,8 +25,7 @@ connectMongooseDb()
   });
 
 /*
-import express from "express";
-const app = express();
+
 
 (async () => {
   try {
