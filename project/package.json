@@ -15,6 +15,7 @@
   "author": "Pradeep Sahu",
   "license": "ISC",
   "devDependencies": {
+    "@types/multer": "^1.4.11",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3"
   },

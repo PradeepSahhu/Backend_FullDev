@@ -3,14 +3,14 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "/pubilc/temp");
+    cb(null, "./public/temp");
   },
 
   filename: function (req, file, cb) {
     // function is controller, "/ " is route.
 
-    cb(null, file.originalName);
-    console.log(file.originalName);
+    cb(null, file.originalname);
+    console.log(file.originalname);
   },
 });
 
