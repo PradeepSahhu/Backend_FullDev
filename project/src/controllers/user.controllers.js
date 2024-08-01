@@ -31,12 +31,22 @@ const registerUser = asyncHandlerDB(async (req, res) => {
 
   const avatarLocalPath = req.files?.avatar[0]?.path;
 
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  let coverImageLocalPath;
+
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage.length > 0
+  ) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  }
 
   // checking for other things.
   console.log("**********************************");
   console.log(avatarLocalPath);
   console.log(req.body);
+  console.log(req.files);
   console.log(existedUser);
   console.log("**********************************");
   // check for images , check for avatar
