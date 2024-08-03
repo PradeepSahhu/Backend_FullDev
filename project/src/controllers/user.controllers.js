@@ -196,7 +196,7 @@ const logoutUser = asyncHandlerDB(async (req, res) => {
 
 const refreshAccessTokens = asyncHandlerDB(async (req, res) => {
   const incomingRefreshToken =
-    req.cookies.refreshAccessTokens || req.body.refreshToken;
+    req.cookies.refreshToken || req.body.refreshToken;
 
   if (!incomingRefreshToken) {
     throw new ApiError(401, "Unauthorized access");
