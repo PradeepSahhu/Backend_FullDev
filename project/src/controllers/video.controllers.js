@@ -5,7 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import { User } from "../models/user.models.js";
 
-const uploadVideo = asyncHandlerDB(async (req, res) => {
+const publishVideo = asyncHandlerDB(async (req, res) => {
   const { title, description } = req.body;
   console.log(title);
   console.log(description);
@@ -79,4 +79,31 @@ const uploadVideo = asyncHandlerDB(async (req, res) => {
     );
 });
 
-export { uploadVideo };
+const getAllvideos = asyncHandlerDB(async (_, res) => {
+  const result = await Video.find({});
+
+  console.log(result);
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, result, "successfully fetched the Video Records")
+    );
+});
+
+const getVideoById = asyncHandlerDB(async (req, res) => {
+  const { videoId } = req.params;
+
+  //TODO: get video by id
+
+  console.log(req.params);
+  console.log(req.body);
+
+  // const foundvideo = await Video.findById(videoId);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, req.params, "Successfully found the video"));
+});
+
+export { publishVideo, getAllvideos, getVideoById };

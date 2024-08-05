@@ -15,7 +15,11 @@ import {
   getWatchHistory,
 } from "../controllers/user.controllers.js";
 
-import { uploadVideo } from "../controllers/video.controllers.js";
+import {
+  publishVideo,
+  getAllvideos,
+  getVideoById,
+} from "../controllers/video.controllers.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -62,7 +66,10 @@ router.route("/video-upload").post(
     { name: "videoName", maxCount: 1 },
     { name: "thumbnail", maxCount: 1 },
   ]),
-  uploadVideo
+  publishVideo
 );
+
+router.route("/getAllVideos").get(getAllvideos);
+router.route("/get-video").post(getVideoById);
 
 export default router;
