@@ -97,13 +97,59 @@ const getVideoById = asyncHandlerDB(async (req, res) => {
   //TODO: get video by id
 
   console.log(req.params);
-  console.log(req.body);
 
-  // const foundvideo = await Video.findById(videoId);
+  const foundvideo = await Video.findById(videoId);
 
   res
     .status(200)
-    .json(new ApiResponse(200, req.params, "Successfully found the video"));
+    .json(new ApiResponse(200, foundvideo, "Successfully found the video"));
 });
 
-export { publishVideo, getAllvideos, getVideoById };
+const updateVideo = asyncHandlerDB(async (req, res) => {
+  const { videoId } = req.params;
+  //TODO: update video details like title, description, thumbnail
+
+  // console.log(req.user);
+  console.log(req.body);
+
+  const { title, description } = req.body;
+  // console.log(videoId);
+  // console.log(req.file);
+  const thumbnailLocalPath = req.file?.path;
+  console.table([title, description, thumbnailLocalPath]);
+
+  if (!title && !description && !thumbnailLocalPath) {
+    throw new ApiError(
+      400,
+      "At least title, description or thumbnail is required to be updated"
+    );
+  }
+
+  let updatedThumbnail;
+
+  updatedThumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+
+  if (!updatedThumbnail) {
+    throw new ApiError(500, "Can't upload the updated thumbnail");
+  }
+
+  const video = await Video.findByIdAndUpdate(
+    videoId,
+    {
+      $set: {
+        title: title,
+        description: description,
+        thumbnail: updatedThumbnail.url,
+      },
+    },
+    { new: true }
+  );
+
+  console.log(video);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, video, "Successfully updated the video"));
+});
+
+export { publishVideo, getAllvideos, getVideoById, updateVideo };

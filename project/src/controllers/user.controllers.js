@@ -4,6 +4,7 @@ import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 // controllers
 
@@ -355,6 +356,7 @@ const updateUserCoverImage = asyncHandlerDB(async (req, res) => {
 
 const getUserChannelProfile = asyncHandlerDB(async (req, res) => {
   const { username } = req.params;
+  console.log(req.params);
 
   if (!username?.trim()) {
     throw new ApiError(400, "Username is missing");
