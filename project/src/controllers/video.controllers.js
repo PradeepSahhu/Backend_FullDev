@@ -79,8 +79,32 @@ const publishVideo = asyncHandlerDB(async (req, res) => {
     );
 });
 
-const getAllvideos = asyncHandlerDB(async (_, res) => {
-  const result = await Video.find({});
+const getAllvideos = asyncHandlerDB(async (req, res) => {
+  const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
+  //TODO: get all videos based on query, sort, pagination
+  console.table([page, limit, sortBy, query, sortType, userId]);
+
+  const filter = {};
+
+  if (userId) {
+    filter.userId = userId;
+  }
+
+  if (query) {
+    filter.$text = { $search: query };
+  }
+
+  const options = {
+    page,
+    limit,
+    sort: { [sortBy]: parseInt(sortType, 1) },
+  };
+  const ress = await Video.find({});
+  console.table(ress);
+
+  var myAggregate = Video.aggregate([{ $match: filter }]);
+  // const result = await Video.find(myAggregate, options);
+  const result = await Video.aggregatePaginate(myAggregate, options);
 
   console.log(result);
 
@@ -152,4 +176,55 @@ const updateVideo = asyncHandlerDB(async (req, res) => {
     .json(new ApiResponse(200, video, "Successfully updated the video"));
 });
 
-export { publishVideo, getAllvideos, getVideoById, updateVideo };
+const deleteVideo = asyncHandlerDB(async (req, res) => {
+  const { videoId } = req.params;
+
+  //TODO: delete video
+
+  const status = await Video.findByIdAndDelete(videoId);
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        videoId == status._id,
+        `video with id ${videoId} has been successfully deleted`
+      )
+    );
+});
+
+const togglePublishStatus = asyncHandlerDB(async (req, res) => {
+  const { videoId } = req.params;
+
+  if (!videoId) {
+    throw new ApiError(401, "No videoId is provided");
+  }
+
+  const info = await Video.findById(videoId);
+
+  const video = await Video.findByIdAndUpdate(
+    videoId,
+    {
+      $set: {
+        isPublished: !info.isPublished,
+      },
+    },
+    { new: true }
+  );
+
+  console.table([video.isPublished]);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, video, "Successfully toggled the isPublished"));
+});
+
+export {
+  publishVideo,
+  getAllvideos,
+  getVideoById,
+  updateVideo,
+  deleteVideo,
+  togglePublishStatus,
+};
