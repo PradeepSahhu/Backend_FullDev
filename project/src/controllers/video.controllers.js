@@ -86,10 +86,12 @@ const getAllvideos = asyncHandlerDB(async (req, res) => {
 
   const filter = {};
 
+  //did with chatgpt...
+
   if (userId) {
     filter.userId = userId;
   }
-
+  //did with chatgpt...
   if (query) {
     filter.$text = { $search: query };
   }
@@ -97,7 +99,7 @@ const getAllvideos = asyncHandlerDB(async (req, res) => {
   const options = {
     page,
     limit,
-    sort: { [sortBy]: parseInt(sortType, 1) },
+    sort: { [sortBy]: parseInt(sortType, 1) }, // this line did with chatgpt...
   };
   const ress = await Video.find({});
   console.table(ress);
