@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import {} from "../controllers/subscription.controllers.js";
+import {
+  toggleSubscription,
+  getUserChannelSubscribers,
+  getSubscribedChannels,
+} from "../controllers/subscription.controllers.js";
 
 const router = Router();
 
