@@ -49,6 +49,13 @@ const getUserChannelSubscribers = asyncHandlerDB(async (req, res) => {
         channel: channelId,
       },
     },
+    {
+      $project: {
+        username: 1,
+        email: 1,
+        avatar: 1,
+      },
+    },
   ]);
 
   res
@@ -68,6 +75,14 @@ const getSubscribedChannels = asyncHandlerDB(async (req, res) => {
     {
       $match: {
         subscriber: subscriberId,
+      },
+    },
+    {
+      $project: {
+        username: 1,
+        fullName: 1,
+        avatar: 1,
+        email: 1,
       },
     },
   ]);
