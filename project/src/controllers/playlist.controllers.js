@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { asyncHandlerDB } from "../utils/asyncHandlerDB.js";
 
 import { Playlist } from "../models/playlists.models.js";
+import mongoose from "mongoose";
 
 const createPlaylist = asyncHandlerDB(async (req, res) => {
   const { name, description } = req.body;
@@ -34,6 +35,18 @@ const createPlaylist = asyncHandlerDB(async (req, res) => {
 const getUserPlaylists = asyncHandlerDB(async (req, res) => {
   const { userId } = req.params;
   //TODO: get user playlists
+
+  if (!userId) {
+    throw new ApiError(401, "userId doesn't exist");
+  }
+
+  await Playlist.aggregate([
+    {
+      $match: {
+        owner: new mongoose.Types.ObjectId(userId),
+      },
+    },
+  ]);
 });
 
 const getPlaylistById = asyncHandlerDB(async (req, res) => {
